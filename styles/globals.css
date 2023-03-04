@@ -10,3 +10,10 @@
     --color-accent: 0 220 220;
   }
 }
+div.sticky {
+  /* position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  padding: 50px;
+  font-size: 20px; */
+}

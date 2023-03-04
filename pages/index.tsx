@@ -1,43 +1,38 @@
 import Head from "next/head";
 import { Parallax, ParallaxLayer } from "@react-spring/parallax";
+import { MainSection } from "@/components/mainSection";
 
 const defaultHeight = "h-screen";
-export const Page1 = () => {
-  return (
-    <div className={`${defaultHeight} w-full border-8 border-blue-700`}>
-      Page1
-    </div>
-  );
-};
 
 export const Table = () => {
   return (
     <div
-      style={{ zIndex: 1 }}
-      className={`${defaultHeight} relative w-full items-center justify-center border-8 border-red-400`}
-    >
-      <div className="h-[400px] w-[800px] bg-blue-800">Table</div>
-    </div>
-  );
-};
-export const Table2 = () => {
-  return (
-    <div
       style={{ zIndex: 2 }}
-      className={`${defaultHeight} sticky top-0 w-full items-center justify-center border-8 border-red-400`}
+      className={`${defaultHeight} sticky top-0 flex w-full items-center justify-center  border-2 border-red-400 `}
     >
-      <div className="h-[400px] w-[800px] bg-red-800">Table</div>
+      <div className="h-[400px] w-[800px] border-[40px] border-orange-900 bg-green-800">
+        Table
+      </div>
     </div>
   );
 };
 
-export const Table3 = () => {
+export const Section2 = () => {
   return (
     <div
       style={{ zIndex: 3 }}
-      className={`${defaultHeight} relative w-full items-center justify-center border-8 border-red-400`}
+      className={`${defaultHeight} relative flex w-full items-center justify-center border-2 border-red-400`}
     >
-      <div className="h-[400px] w-[800px] bg-green-800">Table</div>
+      <div className="relative h-[400px] w-[800px] p-[40px]">
+        <div className="relative p-5 pl-[400px]">
+          Lorem Ipsum is simply dummy text of the printing and typesetting
+          industry. Lorem Ipsum has been the industry's standard dummy text ever
+          since the 1500s, when an unknown printer took a galley of type and
+          scrambled it to make a type specimen book. It has survived not only
+          five centuries, but also the leap into electronic typesetting,
+          remaining essentially unchanged. It was popularised in the 1960s with
+        </div>
+      </div>
     </div>
   );
 };
@@ -51,10 +46,10 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="relative w-full">
+      <main className="relative w-full bg-black">
+        <MainSection></MainSection>
         <Table></Table>
-        <Table2></Table2>
-        <Table3></Table3>
+        <Section2></Section2>
       </main>
     </>
   );

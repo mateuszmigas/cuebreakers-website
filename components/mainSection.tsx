@@ -1,8 +1,85 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import * as THREE from "three";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 const defaultHeight = "h-screen";
 
-export const MainSection = (props: { pageProgress: number }) => {
+const createSphere = (color: number) => {
+  const geometry = new THREE.SphereGeometry(1);
+  const material = new THREE.MeshLambertMaterial({ color });
+  return new THREE.Mesh(geometry, material);
+};
+
+export const MainSectionNew = (props: { pageProgress: number }) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    if (!canvasRef.current) {
+      return;
+    }
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
+    );
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight.position.x = 0;
+    directionalLight.position.y = 0;
+    directionalLight.position.z = 5;
+    directionalLight.position.normalize();
+    scene.add(directionalLight);
+
+    camera.position.z = 5;
+
+    const renderer = new THREE.WebGLRenderer({
+      canvas: canvasRef.current,
+      alpha: true,
+    });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    const loader = new GLTFLoader();
+
+    loader.load(
+      "table.glb",
+      gltf => {
+        gltf.scene.rotateX(Math.PI / 2);
+        const scale = 0.6;
+        gltf.scene.scale.set(scale, scale, scale);
+        scene.add(gltf.scene);
+        const redBall = createSphere(0xe93329);
+        redBall.position.x = -2;
+        scene.add(redBall);
+        const blueBall = createSphere(0x2254f4);
+        scene.add(blueBall);
+        const yellowBall = createSphere(0xf5c142);
+        yellowBall.position.x = 2;
+        scene.add(yellowBall);
+        renderer.render(scene, camera);
+      },
+      undefined,
+      error => {
+        console.error(error);
+      }
+    );
+
+    // document.body.appendChild(renderer.domElement);
+    // renderer.render(scene, camera);
+  }, []);
+
+  return (
+    <div
+      style={{ zIndex: 3 }}
+      className={`${defaultHeight} sticky top-0 flex w-full flex-col items-center justify-center border-2 border-red-400 text-fuchsia-500`}
+    >
+      <canvas ref={canvasRef}></canvas>
+    </div>
+  );
+};
+
+export const MainSectionOld = (props: { pageProgress: number }) => {
   const { pageProgress } = props;
 
   const scale = 1 - 0.9 * pageProgress;
@@ -65,3 +142,5 @@ export const MainSection = (props: { pageProgress: number }) => {
     </div>
   );
 };
+
+export const MainSection = MainSectionNew;

@@ -50,7 +50,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="relative w-full bg-black">
+      <main className="w-ful relative text-white">
         <MainSection pageProgress={pageProgress}></MainSection>
         <TableSection
           sectionProgress={

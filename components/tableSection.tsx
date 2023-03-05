@@ -11,7 +11,7 @@ const calculatePos = (progress: number) => {
 export const TableSection = (props: { sectionProgress: number }) => {
   const { sectionProgress } = props;
 
-  console.log("table section", sectionProgress);
+  // console.log("table section", sectionProgress);
 
   const normalizedProgress = sectionProgress;
 

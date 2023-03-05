@@ -1,30 +1,24 @@
 import { useCallback, useState } from "react";
-import { useParallax } from "react-scroll-parallax";
 
 const defaultHeight = "h-screen";
 
-export const MainSection = () => {
-  const [progress, setProgress] = useState(0);
-  const { ref } = useParallax<HTMLDivElement>({
-    onProgressChange: setProgress,
-  });
+export const MainSection = (props: { pageProgress: number }) => {
+  const { pageProgress } = props;
 
-  const normalizedProgress = (progress - 0.5) * 2;
-  const scale = 1 - 0.9 * normalizedProgress;
+  const scale = 1 - 0.9 * pageProgress;
 
-  const transformRed = `translate3d(${-normalizedProgress * 100}px, ${
-    normalizedProgress * 50
+  const transformRed = `translate3d(${-pageProgress * 100}px, ${
+    pageProgress * 50
   }px, 0) scale(${scale})`;
-  const transformBlue = `translate3d(${-normalizedProgress * 250}px, ${
-    normalizedProgress * 0
+  const transformBlue = `translate3d(${-pageProgress * 250}px, ${
+    pageProgress * 0
   }px, 0) scale(${scale})`;
-  const transformYellow = `translate3d(${-normalizedProgress * 400}px, ${
-    normalizedProgress * 100
+  const transformYellow = `translate3d(${-pageProgress * 400}px, ${
+    pageProgress * 100
   }px, 0) scale(${scale})`;
 
   return (
     <div
-      ref={ref}
       style={{ zIndex: 3 }}
       className={`${defaultHeight} sticky top-0 flex w-full flex-col items-center justify-center border-2 border-red-400`}
     >
@@ -62,7 +56,7 @@ export const MainSection = () => {
           </svg>
         </div>
         <div
-          style={{ opacity: 1 - normalizedProgress }}
+          style={{ opacity: 1 - pageProgress }}
           className="text-6xl text-white"
         >
           CUE BREAKERS

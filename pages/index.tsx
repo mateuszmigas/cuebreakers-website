@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { MainSection } from "@/components/mainSection";
-import { useParallax, ParallaxProvider } from "react-scroll-parallax";
-import { useState } from "react";
+import { usePageScrollPercentage } from "@/components/hooks/usePageScrollPercentage";
+import { TableSection } from "@/components/tableSection";
 
 const defaultHeight = "h-screen";
 
@@ -16,42 +16,6 @@ const calculatePos = (progress: number) => {
       y: baseY + (progress - 0.5) * 2 * 0,
     };
   }
-};
-
-export const Table = () => {
-  const [progress, setProgress] = useState(0);
-  const { ref } = useParallax<HTMLDivElement>({
-    onProgressChange: setProgress,
-  });
-
-  const normalizedProgress = progress;
-
-  console.log(normalizedProgress);
-
-  const pos = calculatePos(normalizedProgress);
-
-  const transformWhite = `translate3d(${pos.x}px, ${pos.y}px, 0) scale(${0.1})`;
-
-  return (
-    <div
-      ref={ref}
-      style={{ zIndex: 2 }}
-      className={`${defaultHeight} sticky top-0 flex w-full items-center justify-center  border-2 border-red-400 `}
-    >
-      <div className="h-[400px] w-[800px] border-[40px] border-orange-900 bg-green-800">
-        <svg style={{ transform: transformWhite }} height="200" width="200">
-          <circle
-            cx="100"
-            cy="100"
-            r="80"
-            stroke="black"
-            strokeWidth="3"
-            fill="white"
-          />
-        </svg>
-      </div>
-    </div>
-  );
 };
 
 export const Section2 = () => {
@@ -75,6 +39,9 @@ export const Section2 = () => {
 };
 
 export default function Home() {
+  const pageProgress = usePageScrollPercentage();
+  const pagesCount = 5;
+
   return (
     <>
       <Head>
@@ -83,13 +50,17 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <ParallaxProvider>
-        <main className="relative w-full bg-black">
-          <MainSection></MainSection>
-          <Table></Table>
-          <Section2></Section2>
-        </main>
-      </ParallaxProvider>
+      <main className="relative w-full bg-black">
+        <MainSection pageProgress={pageProgress}></MainSection>
+        <TableSection
+          sectionProgress={
+            pageProgress < 0.25 ? 0 : (pageProgress - 0.25) / 0.75
+          }
+        ></TableSection>
+        <Section2></Section2>
+        <Section2></Section2>
+        <Section2></Section2>
+      </main>
     </>
   );
 }

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
@@ -11,19 +11,30 @@ const createSphere = (color: number) => {
 };
 
 export const MainSectionNew = (props: { pageProgress: number }) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const htmlRef = useRef<HTMLDivElement>(null);
+  const threeRef = useRef<{
+    scene: THREE.Scene;
+    camera: THREE.Camera;
+    renderer: THREE.WebGLRenderer;
+  }>({} as any);
+
+  // console.log("rene", props.pageProgress);
 
   useEffect(() => {
-    if (!canvasRef.current) {
+    if (!htmlRef.current) {
       return;
     }
+    const width = window.innerWidth;
+    const height = window.innerHeight;
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(
-      75,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      1000
-    );
+    const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({
+      alpha: true,
+      antialias: true,
+    });
+    threeRef.current.camera = camera;
+    threeRef.current.scene = scene;
+    threeRef.current.renderer = renderer;
 
     const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
     directionalLight.position.x = 0;
@@ -32,13 +43,27 @@ export const MainSectionNew = (props: { pageProgress: number }) => {
     directionalLight.position.normalize();
     scene.add(directionalLight);
 
-    camera.position.z = 5;
+    camera.position.z = 10;
 
-    const renderer = new THREE.WebGLRenderer({
-      canvas: canvasRef.current,
-      alpha: true,
-    });
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    htmlRef.current.appendChild(renderer.domElement);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(width, height);
+
+    const redBall = createSphere(0xe93329);
+    redBall.name = "redBall";
+    redBall.position.x = -2;
+    redBall.position.z = 3;
+    scene.add(redBall);
+    const blueBall = createSphere(0x2254f4);
+    blueBall.name = "blueBall";
+    scene.add(blueBall);
+    blueBall.position.z = 3;
+    const yellowBall = createSphere(0xf5c142);
+    yellowBall.name = "yellowBall";
+    yellowBall.position.x = 2;
+    yellowBall.position.z = 3;
+    scene.add(yellowBall);
+    renderer.render(scene, camera);
 
     const loader = new GLTFLoader();
 
@@ -46,17 +71,12 @@ export const MainSectionNew = (props: { pageProgress: number }) => {
       "table.glb",
       gltf => {
         gltf.scene.rotateX(Math.PI / 2);
-        const scale = 0.6;
-        gltf.scene.scale.set(scale, scale, scale);
+        // const scale = 0.5;
+        // gltf.scene.scale.set(scale, scale, scale);
+
+        gltf.scene.name = "table";
         scene.add(gltf.scene);
-        const redBall = createSphere(0xe93329);
-        redBall.position.x = -2;
-        scene.add(redBall);
-        const blueBall = createSphere(0x2254f4);
-        scene.add(blueBall);
-        const yellowBall = createSphere(0xf5c142);
-        yellowBall.position.x = 2;
-        scene.add(yellowBall);
+
         renderer.render(scene, camera);
       },
       undefined,
@@ -64,18 +84,39 @@ export const MainSectionNew = (props: { pageProgress: number }) => {
         console.error(error);
       }
     );
-
-    // document.body.appendChild(renderer.domElement);
-    // renderer.render(scene, camera);
   }, []);
+
+  useEffect(() => {
+    const { scene, camera, renderer } = threeRef.current;
+
+    if (!scene || !camera || !renderer) {
+      return;
+    }
+
+    scene.children
+      .filter(
+        c =>
+          c.name === "redBall" ||
+          c.name === "blueBall" ||
+          c.name === "yellowBall"
+      )
+      .forEach((child, index) => {
+        // if (child instanceof THREE.Mesh) {
+        child.scale.x = 1 / (props.pageProgress + 1);
+        child.scale.y = 1 / (props.pageProgress + 1);
+        child.scale.z = 1 / (props.pageProgress + 1);
+        // }
+      });
+    renderer.render(scene, camera);
+    console.log("rendering");
+  }, [props.pageProgress]);
 
   return (
     <div
+      ref={htmlRef}
       style={{ zIndex: 3 }}
       className={`${defaultHeight} sticky top-0 flex w-full flex-col items-center justify-center border-2 border-red-400 text-fuchsia-500`}
-    >
-      <canvas ref={canvasRef}></canvas>
-    </div>
+    ></div>
   );
 };
 

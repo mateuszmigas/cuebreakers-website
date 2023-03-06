@@ -2,6 +2,7 @@ import Head from "next/head";
 import { MainSection } from "@/components/mainSection";
 import { usePageScrollPercentage } from "@/components/hooks/usePageScrollPercentage";
 import { TableSection } from "@/components/tableSection";
+import NoSSR from "@/components/noSSR";
 
 const defaultHeight = "h-screen";
 
@@ -38,6 +39,17 @@ export const Section2 = () => {
   );
 };
 
+const Placeholder = () => {
+  return (
+    <div
+      style={{ zIndex: 3 }}
+      className={`${defaultHeight} sticky top-0 flex w-full flex-col items-center justify-center border-2 border-red-400`}
+    >
+      <canvas></canvas>
+    </div>
+  );
+};
+
 export default function Home() {
   const pageProgress = usePageScrollPercentage();
   const pagesCount = 5;
@@ -51,7 +63,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="w-ful relative text-white">
+        {/* <NoSSR> */}
         <MainSection pageProgress={pageProgress}></MainSection>
+        {/* </NoSSR> */}
         <TableSection
           sectionProgress={
             pageProgress < 0.25 ? 0 : (pageProgress - 0.25) / 0.75

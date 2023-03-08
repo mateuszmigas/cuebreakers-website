@@ -7,7 +7,11 @@ const defaultHeight = "h-screen";
 const createSphere = (color: number) => {
   const geometry = new THREE.SphereGeometry(1);
   const material = new THREE.MeshLambertMaterial({ color });
-  return new THREE.Mesh(geometry, material);
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.scale.x = 1;
+  mesh.scale.y = 1;
+  mesh.scale.z = 1;
+  return mesh;
 };
 
 export const MainSectionNew = (props: { pageProgress: number }) => {
@@ -17,6 +21,8 @@ export const MainSectionNew = (props: { pageProgress: number }) => {
     camera: THREE.Camera;
     renderer: THREE.WebGLRenderer;
   }>({} as any);
+
+  console.log("pageProgress", props.pageProgress);
 
   useEffect(() => {
     if (!htmlRef.current) {
@@ -100,9 +106,12 @@ export const MainSectionNew = (props: { pageProgress: number }) => {
       )
       .forEach((child, index) => {
         // if (child instanceof THREE.Mesh) {
-        child.scale.x = 1 / (props.pageProgress + 1);
-        child.scale.y = 1 / (props.pageProgress + 1);
-        child.scale.z = 1 / (props.pageProgress + 1);
+        console.log("changing scale", props.pageProgress);
+
+        const newScale = Math.max(1 - props.pageProgress, 0.1);
+        child.scale.x = newScale;
+        child.scale.y = newScale;
+        child.scale.z = newScale;
         // }
       });
     renderer.render(scene, camera);
@@ -113,7 +122,7 @@ export const MainSectionNew = (props: { pageProgress: number }) => {
     <div
       ref={htmlRef}
       style={{ zIndex: 3 }}
-      className={`${defaultHeight} sticky top-0 flex w-full flex-col items-center justify-center border-2 border-red-400 text-fuchsia-500`}
+      className={`absolute flex h-screen w-full flex-col border-2 border-red-400 text-fuchsia-500`}
     ></div>
   );
 };

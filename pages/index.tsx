@@ -1,7 +1,6 @@
 import Head from "next/head";
 import { MainSection } from "@/components/mainSection";
 import { usePageScrollPercentage } from "@/components/hooks/usePageScrollPercentage";
-import { TableSection } from "@/components/tableSection";
 import NoSSR from "@/components/noSSR";
 import { useRef } from "react";
 
@@ -31,16 +30,24 @@ const Container = () => {
   const pageProgress = usePageScrollPercentage(mainRef);
   const pagesCount = 5;
 
+  console.log("pageProgress", pageProgress);
+
   return (
-    <main ref={mainRef} className="snappy h-full text-white">
+    <div className="relative h-screen w-screen">
       <MainSection pageProgress={pageProgress}></MainSection>
-      <TableSection
-        sectionProgress={pageProgress < 0.25 ? 0 : (pageProgress - 0.25) / 0.75}
-      ></TableSection>
-      <Section2></Section2>
-      <Section2></Section2>
-      <Section2></Section2>
-    </main>
+      {/* <div className="absolute h-screen w-full bg-red-300">Duppa</div> */}
+      <main
+        style={{ zIndex: 4 }}
+        ref={mainRef}
+        className="snappy absolute h-full w-full text-white"
+      >
+        <Section2></Section2>
+        <Section2></Section2>
+        <Section2></Section2>
+        <Section2></Section2>
+        <Section2></Section2>
+      </main>
+    </div>
   );
 };
 

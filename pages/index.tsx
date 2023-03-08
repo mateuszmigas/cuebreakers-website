@@ -3,30 +3,17 @@ import { MainSection } from "@/components/mainSection";
 import { usePageScrollPercentage } from "@/components/hooks/usePageScrollPercentage";
 import { TableSection } from "@/components/tableSection";
 import NoSSR from "@/components/noSSR";
+import { useRef } from "react";
 
-const defaultHeight = "h-screen";
-
-const baseX = 500;
-const baseY = 50;
-const calculatePos = (progress: number) => {
-  if (progress < 0.5) {
-    return { x: baseX, y: baseY };
-  } else {
-    return {
-      x: baseX - (progress - 0.5) * 2 * 400,
-      y: baseY + (progress - 0.5) * 2 * 0,
-    };
-  }
-};
+const defaultHeight = "h-full";
 
 export const Section2 = () => {
   return (
     <div
-      style={{ zIndex: 3 }}
-      className={`${defaultHeight} relative flex w-full items-center justify-center border-2 border-red-400`}
+      className={`${defaultHeight} snap-child w-full items-center justify-center border-2 border-red-400`}
     >
-      <div className="relative h-[400px] w-[800px] p-[40px]">
-        <div className="relative p-5 pl-[400px]">
+      <div className=" h-[400px] w-[800px] p-[40px]">
+        <div className=" p-5 pl-[400px]">
           Lorem Ipsum is simply dummy text of the printing and typesetting
           industry. Lorem Ipsum has been the industrys standard dummy text ever
           since the 1500s, when an unknown printer took a galley of type and
@@ -39,21 +26,25 @@ export const Section2 = () => {
   );
 };
 
-const Placeholder = () => {
+const Container = () => {
+  const mainRef = useRef<HTMLElement>(null);
+  const pageProgress = usePageScrollPercentage(mainRef);
+  const pagesCount = 5;
+
   return (
-    <div
-      style={{ zIndex: 3 }}
-      className={`${defaultHeight} sticky top-0 flex w-full flex-col items-center justify-center border-2 border-red-400`}
-    >
-      <canvas></canvas>
-    </div>
+    <main ref={mainRef} className="snappy h-full text-white">
+      <MainSection pageProgress={pageProgress}></MainSection>
+      <TableSection
+        sectionProgress={pageProgress < 0.25 ? 0 : (pageProgress - 0.25) / 0.75}
+      ></TableSection>
+      <Section2></Section2>
+      <Section2></Section2>
+      <Section2></Section2>
+    </main>
   );
 };
 
 export default function Home() {
-  const pageProgress = usePageScrollPercentage();
-  const pagesCount = 5;
-
   return (
     <>
       <Head>
@@ -62,19 +53,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="w-ful relative text-white">
-        {/* <NoSSR> */}
-        <MainSection pageProgress={pageProgress}></MainSection>
-        {/* </NoSSR> */}
-        <TableSection
-          sectionProgress={
-            pageProgress < 0.25 ? 0 : (pageProgress - 0.25) / 0.75
-          }
-        ></TableSection>
-        <Section2></Section2>
-        <Section2></Section2>
-        <Section2></Section2>
-      </main>
+      <Container></Container>
     </>
   );
 }

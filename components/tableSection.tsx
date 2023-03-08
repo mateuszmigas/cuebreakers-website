@@ -24,7 +24,7 @@ export const TableSection = (props: { sectionProgress: number }) => {
   return (
     <div
       style={{ zIndex: 2 }}
-      className={`${defaultHeight} sticky top-0 flex w-full items-center justify-center  border-2 border-red-400 `}
+      className={`${defaultHeight} snap-child flex w-full items-center justify-center  border-2 border-red-400 `}
     >
       <div className="h-[400px] w-[800px] border-[40px] border-orange-900 bg-green-800">
         <svg style={{ transform: transformWhite }} height="200" width="200">

@@ -33,7 +33,7 @@ export const MainSectionNew = (props: { pageProgress: number }) => {
     <div
       ref={htmlRef}
       style={{ zIndex: 3 }}
-      className={`absolute flex h-screen w-full flex-col border-2 border-red-400 text-fuchsia-500`}
+      className={`absolute flex h-full w-full flex-col border-2 border-red-400 text-fuchsia-500`}
     ></div>
   );
 };

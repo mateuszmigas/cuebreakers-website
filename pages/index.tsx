@@ -1,7 +1,6 @@
 import Head from "next/head";
 import { MainSection } from "@/components/mainSection";
 import { usePageScrollPercentage } from "@/components/hooks/usePageScrollPercentage";
-import NoSSR from "@/components/noSSR";
 import { useRef } from "react";
 
 const defaultHeight = "h-full";
@@ -30,10 +29,8 @@ const Container = () => {
   const pageProgress = usePageScrollPercentage(mainRef);
   const pagesCount = 5;
 
-  console.log("pageProgress", pageProgress);
-
   return (
-    <div className="relative h-screen w-screen">
+    <div className="relative h-full w-full">
       <MainSection pageProgress={pageProgress}></MainSection>
       <main
         style={{ zIndex: 4 }}

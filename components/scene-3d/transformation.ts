@@ -31,8 +31,6 @@ export const applyTransformations = (
     }
     if (t.type === "translate") {
       const object = objects[t.object];
-      console.log("apply translate");
-
       object.position.x =
         t.from.value.x + (t.to.value.x - t.from.value.x) * progress;
       object.position.y =

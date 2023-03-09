@@ -2,10 +2,11 @@ import { SceneController } from "./sceneController";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { createSphere } from "./createBall";
+import { useEffect, useRef } from "react";
 
-export const createScene = (hostElement: HTMLElement): SceneController => {
-  const width = window.innerWidth;
-  const height = window.innerHeight;
+export const createScene = (hostElement: HTMLDivElement): SceneController => {
+  const width = hostElement.clientWidth;
+  const height = hostElement.clientHeight;
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
   const renderer = new THREE.WebGLRenderer({
@@ -54,10 +55,22 @@ export const createScene = (hostElement: HTMLElement): SceneController => {
       renderer.render(scene, camera);
     },
     undefined,
-    error => {
-      console.error(error);
-    }
+    error => console.error(error)
   );
+
+  const resizeObserver = new ResizeObserver(elements => {
+    const observerEntry = elements.find(e => e.target === hostElement);
+
+    if (observerEntry) {
+      const { width, height } = observerEntry.target.getBoundingClientRect();
+      renderer.setSize(width, height);
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      renderer.render(scene, camera);
+      console.log("resizing");
+    }
+  });
+  resizeObserver.observe(hostElement);
 
   render();
 
@@ -70,6 +83,9 @@ export const createScene = (hostElement: HTMLElement): SceneController => {
       whiteBall,
       table,
       camera,
+    },
+    dispose: () => {
+      resizeObserver.disconnect();
     },
   };
 };

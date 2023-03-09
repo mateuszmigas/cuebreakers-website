@@ -12,16 +12,20 @@
 }
 
 .snappy {
-  height: 100vh;
   scroll-snap-type: y mandatory;
-  /* flex-flow: column nowrap; */
-  /* display: flex; */
   overflow: auto;
-  /* outline: 1px dashed lightgray; */
-  /* flex: none; */
 }
 
 .snap-child {
   scroll-snap-align: center;
   flex: none;
+}
+
+html,
+body,
+body > div:first-child,
+div#__next,
+div#__next > div {
+  height: 100%;
+  width: 100%;
 }

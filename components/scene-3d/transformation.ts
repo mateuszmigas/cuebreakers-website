@@ -1,3 +1,4 @@
+import * as THREE from "three";
 import { SceneController } from "./sceneController";
 import { TransformedObject } from "./transformedObject";
 
@@ -18,6 +19,9 @@ export type Transformation = { object: TransformedObject } & (
       type: "lookAt";
       from: { value: Vector3 };
       to: { value: Vector3 };
+    }
+  | {
+      type: "fadeIn";
     }
 );
 
@@ -56,5 +60,17 @@ export const applyTransformation = (
       transformation.from.value.z +
         (transformation.to.value.z - transformation.from.value.z) * progress
     );
+  }
+  if (transformation.type === "fadeIn") {
+    const object = objects[transformation.object];
+    object.traverse(c => {
+      if (c instanceof THREE.Mesh) {
+        const materials = Array.isArray(c.material) ? c.material : [c.material];
+        materials.forEach(m => {
+          m.transparent = true;
+          m.opacity = progress;
+        });
+      }
+    });
   }
 };

@@ -48,7 +48,7 @@ export const MainSectionNew = (props: {
     <div
       ref={elementRef}
       style={{ zIndex: 3 }}
-      className={`absolute flex h-full w-full flex-col overflow-hidden border-2 border-red-400 text-fuchsia-500`}
+      className={`absolute flex h-full w-full flex-col overflow-hidden`}
     ></div>
   );
 };

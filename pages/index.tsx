@@ -8,10 +8,11 @@ const defaultHeight = "h-full";
 export const Section2 = () => {
   return (
     <div
-      className={`${defaultHeight} snap-child w-full items-center justify-center border-2 border-red-400`}
+      className={`${defaultHeight} snap-child flex w-full items-center items-center justify-center justify-center border-2 border-blue-400`}
     >
-      <div className=" h-[400px] w-[800px] p-[40px]">
-        <div className=" p-5 pl-[400px]">
+      <div className="h-[50%] w-[50%]">
+        <div className="text-5xl">Some section header</div>
+        <div className="">
           Lorem Ipsum is simply dummy text of the printing and typesetting
           industry. Lorem Ipsum has been the industrys standard dummy text ever
           since the 1500s, when an unknown printer took a galley of type and
@@ -23,25 +24,28 @@ export const Section2 = () => {
     </div>
   );
 };
+export const Section1 = () => {
+  return (
+    <div
+      className={`${defaultHeight} snap-child flex w-full items-center justify-center border-2 border-blue-400`}
+    >
+      <div className="text-5xl">DUPA 213</div>
+    </div>
+  );
+};
 
 const Container = () => {
   const mainRef = useRef<HTMLElement>(null);
-  // const pageProgress = usePageScrollPercentage(mainRef);
 
   return (
     <div className="relative h-full w-full">
-      <div
-        style={{ zIndex: 3 }}
-        className={`absolute flex h-full w-full flex-col overflow-hidden border-2 border-red-400 text-fuchsia-500`}
-      >
-        <MainSection containerRef={mainRef}></MainSection>
-      </div>
+      <MainSection containerRef={mainRef}></MainSection>
       <main
         style={{ zIndex: 4 }}
         ref={mainRef}
         className="snappy absolute h-full w-full text-white"
       >
-        <Section2></Section2>
+        <Section1></Section1>
         <Section2></Section2>
         <Section2></Section2>
         <Section2></Section2>

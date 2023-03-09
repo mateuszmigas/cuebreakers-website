@@ -15,6 +15,9 @@ export const createScene = (hostElement: HTMLDivElement): SceneController => {
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
+  const light = new THREE.AmbientLight(0x404040); // soft white light
+  scene.add(light);
+
   const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
   directionalLight.castShadow = true;
   directionalLight.position.x = 0;
@@ -47,7 +50,6 @@ export const createScene = (hostElement: HTMLDivElement): SceneController => {
     gltf => {
       gltf.scene.rotateY(Math.PI);
       objects.table.add(gltf.scene);
-      renderer.render(scene, camera);
     },
     undefined,
     error => console.error(error)

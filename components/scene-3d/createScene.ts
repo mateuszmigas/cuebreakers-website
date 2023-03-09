@@ -26,7 +26,9 @@ export const createScene = (hostElement: HTMLDivElement): SceneController => {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(width, height);
 
-  const render = () => renderer.render(scene, camera);
+  const render = () => {
+    requestAnimationFrame(() => renderer.render(scene, camera));
+  };
 
   const objects = {
     redBall: createSphere(0xe93329),

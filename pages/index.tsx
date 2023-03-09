@@ -26,11 +26,16 @@ export const Section2 = () => {
 
 const Container = () => {
   const mainRef = useRef<HTMLElement>(null);
-  const pageProgress = usePageScrollPercentage(mainRef);
+  // const pageProgress = usePageScrollPercentage(mainRef);
 
   return (
     <div className="relative h-full w-full">
-      <MainSection pageProgress={pageProgress}></MainSection>
+      <div
+        style={{ zIndex: 3 }}
+        className={`absolute flex h-full w-full flex-col overflow-hidden border-2 border-red-400 text-fuchsia-500`}
+      >
+        <MainSection containerRef={mainRef}></MainSection>
+      </div>
       <main
         style={{ zIndex: 4 }}
         ref={mainRef}

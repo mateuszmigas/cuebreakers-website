@@ -60,24 +60,32 @@ export const thresholds: Threshold[] = [
         from: { value: { x: 0, y: tableHeight, z: 0 } },
         to: { value: { x: -2.5, y: tableHeight, z: -1.2 } },
       },
-      {
-        object: "camera",
-        type: "lookAt",
-        from: { value: { x: 0, y: tableHeight + 0.2, z: 0 } },
-        to: { value: { x: -2.5, y: tableHeight + 0.2, z: -1.2 } },
-      },
-      {
-        object: "camera",
-        type: "position",
-        from: { value: { x: 0.5, y: 2, z: 0.25 } },
-        to: { value: { x: -2, y: 2, z: 0.25 - 1.2 } },
-      },
+
       // {
       //   object: "blueBall",
       //   type: "position",
       //   from:{ x: -2.5, y: tableHeight, z: -1.2 } },
       //   to: { value: { x: 3, y: tableHeight, z: 0 } },
       // },
+    ],
+  },
+  {
+    from: 0.5,
+    to: 0.75,
+    transformations: [
+      {
+        object: "camera",
+        type: "position",
+        from: { value: { x: 0.5, y: 2, z: 0.25 } },
+        to: { value: { x: -2, y: 2, z: -2 } },
+        // to: { value: { x: 0.5, y: 2, z: 0.25 } },
+      },
+      {
+        object: "camera",
+        type: "lookAt",
+        from: { value: { x: 0, y: tableHeight + 0.2, z: 0 } },
+        to: { value: { x: -2.5, y: tableHeight + 0.2, z: -1.2 } },
+      },
     ],
   },
 ];

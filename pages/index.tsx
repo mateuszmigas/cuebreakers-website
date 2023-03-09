@@ -35,7 +35,6 @@ const Container = () => {
   return (
     <div className="relative h-screen w-screen">
       <MainSection pageProgress={pageProgress}></MainSection>
-      {/* <div className="absolute h-screen w-full bg-red-300">Duppa</div> */}
       <main
         style={{ zIndex: 4 }}
         ref={mainRef}

@@ -2,7 +2,6 @@ import { SceneController } from "./sceneController";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { createSphere } from "./createBall";
-import { useEffect, useRef } from "react";
 
 export const createScene = (hostElement: HTMLDivElement): SceneController => {
   const width = hostElement.clientWidth;
@@ -29,29 +28,25 @@ export const createScene = (hostElement: HTMLDivElement): SceneController => {
 
   const render = () => renderer.render(scene, camera);
 
-  const redBall = createSphere(0xe93329);
-  redBall.position.x = -2;
-  redBall.position.z = 3;
-  scene.add(redBall);
-  const blueBall = createSphere(0x2254f4);
-  scene.add(blueBall);
-  blueBall.position.z = 3;
-  const yellowBall = createSphere(0xf5c142);
-  yellowBall.position.x = 2;
-  yellowBall.position.z = 3;
-  scene.add(yellowBall);
-  const whiteBall = createSphere(0xffffff);
-  scene.add(whiteBall);
-  const table = new THREE.Object3D();
-  scene.add(table);
+  const objects = {
+    redBall: createSphere(0xe93329),
+    blueBall: createSphere(0x2254f4),
+    yellowBall: createSphere(0xf5c142),
+    whiteBall: createSphere(0xffffff),
+    table: new THREE.Object3D(),
+    camera,
+  };
+
+  scene.add(...Object.values(objects));
+
+  objects.blueBall.position.set(0, 0, 3);
 
   const loader = new GLTFLoader();
   loader.load(
     "table.glb",
     gltf => {
       gltf.scene.rotateX(Math.PI / 2);
-      gltf.scene.name = "table";
-      table.add(gltf.scene);
+      objects.table.add(gltf.scene);
       renderer.render(scene, camera);
     },
     undefined,
@@ -67,23 +62,13 @@ export const createScene = (hostElement: HTMLDivElement): SceneController => {
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
       renderer.render(scene, camera);
-      console.log("resizing");
     }
   });
   resizeObserver.observe(hostElement);
 
-  render();
-
   return {
     render,
-    objects: {
-      redBall,
-      blueBall,
-      yellowBall,
-      whiteBall,
-      table,
-      camera,
-    },
+    objects,
     dispose: () => {
       resizeObserver.disconnect();
     },

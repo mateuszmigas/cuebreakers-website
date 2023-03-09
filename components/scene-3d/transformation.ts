@@ -16,27 +16,30 @@ export type Transformation = { object: TransformedObject } & (
     }
 );
 
-export const applyTransformations = (
+export const applyTransformation = (
   objects: SceneController["objects"],
-  transformations: Transformation[],
+  transformation: Transformation,
   progress: number
 ) => {
-  transformations.forEach(t => {
-    if (t.type === "scale") {
-      const object = objects[t.object];
-      const newScale = t.from.value + (t.to.value - t.from.value) * progress;
-      object.scale.x = newScale;
-      object.scale.y = newScale;
-      object.scale.z = newScale;
-    }
-    if (t.type === "translate") {
-      const object = objects[t.object];
-      object.position.x =
-        t.from.value.x + (t.to.value.x - t.from.value.x) * progress;
-      object.position.y =
-        t.from.value.y + (t.to.value.y - t.from.value.y) * progress;
-      object.position.z =
-        t.from.value.z + (t.to.value.z - t.from.value.z) * progress;
-    }
-  });
+  if (transformation.type === "scale") {
+    const object = objects[transformation.object];
+    const newScale =
+      transformation.from.value +
+      (transformation.to.value - transformation.from.value) * progress;
+    object.scale.x = newScale;
+    object.scale.y = newScale;
+    object.scale.z = newScale;
+  }
+  if (transformation.type === "translate") {
+    const object = objects[transformation.object];
+    object.position.x =
+      transformation.from.value.x +
+      (transformation.to.value.x - transformation.from.value.x) * progress;
+    object.position.y =
+      transformation.from.value.y +
+      (transformation.to.value.y - transformation.from.value.y) * progress;
+    object.position.z =
+      transformation.from.value.z +
+      (transformation.to.value.z - transformation.from.value.z) * progress;
+  }
 };

@@ -20,14 +20,20 @@ export const thresholds: Threshold[] = [
       {
         object: "blueBall",
         type: "translate",
-        from: { value: { x: 0, y: 0, z: 3 } },
-        to: { value: { x: -1, y: -1, z: 2 } },
+        from: { value: { x: 0, y: 0, z: 5 } },
+        to: { value: { x: -1, y: -1, z: 5 } },
       },
       {
         object: "redBall",
         type: "scale",
         from: { value: 1 },
         to: { value: 0.1 },
+      },
+      {
+        object: "redBall",
+        type: "translate",
+        from: { value: { x: -2, y: 0, z: 5 } },
+        to: { value: { x: -2, y: -1, z: 5 } },
       },
     ],
   },

@@ -27,7 +27,6 @@ export const Section2 = () => {
 const Container = () => {
   const mainRef = useRef<HTMLElement>(null);
   const pageProgress = usePageScrollPercentage(mainRef);
-  const pagesCount = 5;
 
   return (
     <div className="relative h-full w-full">

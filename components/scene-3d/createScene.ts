@@ -12,16 +12,16 @@ export const createScene = (hostElement: HTMLDivElement): SceneController => {
     alpha: true,
     antialias: true,
   });
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
   const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+  directionalLight.castShadow = true;
   directionalLight.position.x = 0;
-  directionalLight.position.y = 0;
-  directionalLight.position.z = 5;
+  directionalLight.position.y = 5;
+  directionalLight.position.z = 0;
   directionalLight.position.normalize();
   scene.add(directionalLight);
-
-  camera.position.z = 10;
-
   hostElement.appendChild(renderer.domElement);
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(width, height);
@@ -39,13 +39,11 @@ export const createScene = (hostElement: HTMLDivElement): SceneController => {
 
   scene.add(...Object.values(objects));
 
-  objects.blueBall.position.set(0, 0, 3);
-
   const loader = new GLTFLoader();
   loader.load(
-    "table.glb",
+    "Scene.gltf",
     gltf => {
-      gltf.scene.rotateX(Math.PI / 2);
+      gltf.scene.rotateY(Math.PI);
       objects.table.add(gltf.scene);
       renderer.render(scene, camera);
     },

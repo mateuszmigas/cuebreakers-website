@@ -10,7 +10,12 @@ export type Transformation = { object: TransformedObject } & (
       to: { value: number };
     }
   | {
-      type: "translate";
+      type: "position";
+      from: { value: Vector3 };
+      to: { value: Vector3 };
+    }
+  | {
+      type: "lookAt";
       from: { value: Vector3 };
       to: { value: Vector3 };
     }
@@ -30,16 +35,26 @@ export const applyTransformation = (
     object.scale.y = newScale;
     object.scale.z = newScale;
   }
-  if (transformation.type === "translate") {
+  if (transformation.type === "position") {
     const object = objects[transformation.object];
-    object.position.x =
+    object.position.set(
       transformation.from.value.x +
-      (transformation.to.value.x - transformation.from.value.x) * progress;
-    object.position.y =
+        (transformation.to.value.x - transformation.from.value.x) * progress,
       transformation.from.value.y +
-      (transformation.to.value.y - transformation.from.value.y) * progress;
-    object.position.z =
+        (transformation.to.value.y - transformation.from.value.y) * progress,
       transformation.from.value.z +
-      (transformation.to.value.z - transformation.from.value.z) * progress;
+        (transformation.to.value.z - transformation.from.value.z) * progress
+    );
+  }
+  if (transformation.type === "lookAt") {
+    const object = objects[transformation.object];
+    object.lookAt(
+      transformation.from.value.x +
+        (transformation.to.value.x - transformation.from.value.x) * progress,
+      transformation.from.value.y +
+        (transformation.to.value.y - transformation.from.value.y) * progress,
+      transformation.from.value.z +
+        (transformation.to.value.z - transformation.from.value.z) * progress
+    );
   }
 };
